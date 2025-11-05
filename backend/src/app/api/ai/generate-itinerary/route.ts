@@ -5,7 +5,7 @@ import { corsMiddleware, addCorsHeaders } from '@/lib/cors';
 import { generateTravelItinerary, type TravelInput } from '@/lib/ai';
 
 // 配置路由超时时间（秒）
-export const maxDuration = 60 * 10; // 增加到 10 分钟
+export const maxDuration = 600; // 增加到 10 分钟
 export const dynamic = 'force-dynamic'; // 禁用静态优化
 
 export async function OPTIONS(request: NextRequest) {

@@ -15,6 +15,7 @@ const allowedOrigins: string[] = [
 const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\\d+)?$/i;
 
 function isAllowedOrigin(origin?: string | null): origin is string {
+  if (process.env.NODE_ENV != 'production') return true; // 测试环境下允许所有来源
   if (!origin) return false;
   if (allowedOrigins.includes(origin)) return true;
   // 在非生产环境下放宽到任意 localhost 端口
