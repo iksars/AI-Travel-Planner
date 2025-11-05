@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  password      String        // 存储加盐哈希后的密码
+  name          String?
+  avatar        String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // 关联关系
+  travelPlans   TravelPlan[]
+}
+
+// 旅行计划模型
+model TravelPlan {
+  id              String        @id @default(uuid())
+  userId          String
+  title           String
+  destination     String        // 目的地
+  startDate       DateTime
+  endDate         DateTime
+  budget          Float         // 总预算
+  peopleCount     Int           // 人数
+  preferences     String?       // JSON 字符串，存储用户偏好（如：美食、自然风光等）
+  status          String        @default("draft") // draft, completed, ongoing
+  aiGenerated     Boolean       @default(false)   // 是否由 AI 生成
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // 关联关系
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itineraries     Itinerary[]
+  expenses        Expense[]
+}
+
+// 每日行程模型
+model Itinerary {
+  id              String        @id @default(uuid())
+  travelPlanId    String
+  day             Int           // 第几天
+  date            DateTime
+  activities      String        // JSON 字符串，存储当天活动列表
+  transportation  String?       // 交通方式
+  accommodation   String?       // 住宿信息（JSON）
+  restaurants     String?       // 餐厅推荐（JSON）
+  notes           String?       // 用户备注
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // 关联关系
+  travelPlan      TravelPlan    @relation(fields: [travelPlanId], references: [id], onDelete: Cascade)
+}
+
+// 费用记录模型
+model Expense {
+  id              String        @id @default(uuid())
+  travelPlanId    String
+  category        String        // 分类：交通、住宿、餐饮、景点、购物等
+  amount          Float         // 金额
+  currency        String        @default("CNY")
+  description     String?
+  date            DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+  
+  // 关联关系
+  travelPlan      TravelPlan    @relation(fields: [travelPlanId], references: [id], onDelete: Cascade)
+}
