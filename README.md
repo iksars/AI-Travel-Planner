@@ -4,6 +4,35 @@
 
 We aim to simplify the travel planning process, understand user needs through AI, automatically generate detailed travel routes and suggestions, and provide real-time travel assistance.
 
+## docker 快速开始
+
+### 1. 克隆项目
+```bash
+git clone https://github.com/iksars/AI-Travel-Planner.git
+cd AI-Travel-Planner
+```
+
+### 2. 创建环境变量文件
+```bash
+cp backend/.env.example backend/.env
+```   
+
+### 3. 编辑 `backend/.env` 文件，添加你的 OpenAI API Key， 科大讯飞语音识别 API Key 等必要配置：
+```env
+OPENAI_API_KEY="sk-your-openai-api-key"
+XF_APPID="your-xf-appid"
+XF_APIKEY="your-xf-apikey"
+XF_API_SECRET="your-xf-api-secret"
+```
+
+### 4. 使用 Docker Compose 启动服务
+```bash
+docker-compose up -d --build
+```
+
+### 5. 访问应用
+打开浏览器访问：http://localhost:5173
+
 ## ✨ 核心特性
 
 ### 🤖 AI 智能规划
